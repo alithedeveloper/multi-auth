@@ -494,18 +494,6 @@ class MultiAuthInstallCommand extends Command
                 'path' => $views_path . '/layouts/partials/_content.blade.php',
             ],
             [
-                'stub' => $stub_path . '/views/errors/404.blade.stub',
-                'path' => $views_path . '/errors/404.blade.php',
-            ],
-            [
-                'stub' => $stub_path . '/views/errors/500.blade.stub',
-                'path' => $views_path . '/errors/500.blade.php',
-            ],
-            [
-                'stub' => $stub_path . '/views/errors/503.blade.stub',
-                'path' => $views_path . '/errors/503.blade.php',
-            ],
-            [
                 'stub' => $stub_path . '/views/auth/login.blade.stub',
                 'path' => $views_path . '/auth/login.blade.php',
             ],
