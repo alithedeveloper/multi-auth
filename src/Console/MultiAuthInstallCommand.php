@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 
 class MultiAuthInstallCommand extends Command
 {
-
     protected $name = '';
 
     protected $exits = false;
@@ -210,8 +209,9 @@ class MultiAuthInstallCommand extends Command
      */
     protected function parseName($name = null)
     {
-        if (!$name)
+        if (!$name) {
             $name = $this->name;
+        }
 
         return $parsed = array(
             '{{namespace}}' => $this->getNamespace(),
@@ -234,7 +234,6 @@ class MultiAuthInstallCommand extends Command
     protected function registerConfigurations($stub_path)
     {
         try {
-
             $auth = file_get_contents(config_path('auth.php'));
 
             $data_map = $this->parseName();
@@ -274,7 +273,6 @@ class MultiAuthInstallCommand extends Command
 
             // Overwrite config file
             file_put_contents(config_path('auth.php'), $auth);
-
         } catch (Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
@@ -288,7 +286,6 @@ class MultiAuthInstallCommand extends Command
     protected function loadModel($stub_path)
     {
         try {
-
             $stub = file_get_contents($stub_path . '/model.stub');
 
             $data_map = $this->parseName();
@@ -300,7 +297,6 @@ class MultiAuthInstallCommand extends Command
             file_put_contents($model_path, $model);
 
             return $model_path;
-
         } catch (Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
@@ -314,7 +310,6 @@ class MultiAuthInstallCommand extends Command
     protected function loadFactory($stub_path)
     {
         try {
-
             $stub = file_get_contents($stub_path . '/factory.stub');
 
             $data_map = $this->parseName();
@@ -326,7 +321,6 @@ class MultiAuthInstallCommand extends Command
             file_put_contents($factory_path, $factory);
 
             return $factory_path;
-
         } catch (Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
@@ -340,7 +334,6 @@ class MultiAuthInstallCommand extends Command
     protected function loadNotification($stub_path)
     {
         try {
-
             $data_map = $this->parseName();
 
             $notifications_path = app_path('/Notifications/' . $data_map['{{singularClass}}'] . '/Auth');
@@ -369,7 +362,6 @@ class MultiAuthInstallCommand extends Command
             }
 
             return $notifications_path;
-
         } catch (Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
@@ -383,7 +375,6 @@ class MultiAuthInstallCommand extends Command
     protected function loadMigrations($stub_path)
     {
         try {
-
             $data_map = $this->parseName();
 
             $signature = date('Y_m_d_His');
@@ -412,7 +403,6 @@ class MultiAuthInstallCommand extends Command
             }
 
             return database_path('migrations');
-
         } catch (Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
@@ -492,8 +482,28 @@ class MultiAuthInstallCommand extends Command
                 'path' => $views_path . '/home.blade.php',
             ],
             [
-                'stub' => $stub_path . '/views/layouts/app.blade.stub',
-                'path' => $views_path . '/layouts/app.blade.php',
+                'stub' => $stub_path . '/views/layouts/base.blade.stub',
+                'path' => $views_path . '/layouts/base.blade.php',
+            ],
+            [
+                'stub' => $stub_path . '/views/layouts/partials/_header.blade.stub',
+                'path' => $views_path . '/layouts/partials/_header.blade.php',
+            ],
+            [
+                'stub' => $stub_path . '/views/layouts/partials/_content.blade.stub',
+                'path' => $views_path . '/layouts/partials/_content.blade.php',
+            ],
+            [
+                'stub' => $stub_path . '/views/errors/404.blade.stub',
+                'path' => $views_path . '/errors/404.blade.php',
+            ],
+            [
+                'stub' => $stub_path . '/views/errors/500.blade.stub',
+                'path' => $views_path . '/errors/500.blade.php',
+            ],
+            [
+                'stub' => $stub_path . '/views/errors/503.blade.stub',
+                'path' => $views_path . '/errors/503.blade.php',
             ],
             [
                 'stub' => $stub_path . '/views/auth/login.blade.stub',
@@ -566,7 +576,6 @@ class MultiAuthInstallCommand extends Command
     protected function registerRoutes($stub_path)
     {
         try {
-
             $provider_path = app_path('Providers/RouteServiceProvider.php');
 
             $provider = file_get_contents($provider_path);
@@ -599,7 +608,6 @@ class MultiAuthInstallCommand extends Command
             file_put_contents($provider_path, $provider);
 
             return $provider_path;
-
         } catch (Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
@@ -613,7 +621,6 @@ class MultiAuthInstallCommand extends Command
     protected function loadMiddleware($stub_path)
     {
         try {
-
             $data_map = $this->parseName();
 
             $middleware_path = app_path('Http/Middleware');
@@ -639,7 +646,6 @@ class MultiAuthInstallCommand extends Command
             }
 
             return $middleware_path;
-
         } catch (Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
@@ -653,7 +659,6 @@ class MultiAuthInstallCommand extends Command
     protected function registerRouteMiddleware($stub_path)
     {
         try {
-
             $data_map = $this->parseName();
 
             $kernel_path = app_path('Http/Kernel.php');
@@ -674,10 +679,8 @@ class MultiAuthInstallCommand extends Command
             file_put_contents($kernel_path, $kernel);
 
             return $kernel_path;
-
         } catch (Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
     }
-
 }
